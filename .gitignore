@@ -1,0 +1,10 @@
+*.swp
+a.out
+debug/
+.vscode
+googletest*
+CMakeCache.txt
+CMakeFiles/
+src/Makefile
+cmake_install.cmake
+src/lib
