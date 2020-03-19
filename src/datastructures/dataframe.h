@@ -50,6 +50,10 @@ class DataFrame : public Object {
             delete columns;
             delete schema;
         }
+
+        DataFrame* fromArray(Key key, KDStore store, size_t size, Data** values) {
+            
+        }
         
         /** Returns the dataframe's schema. Modifying the schema after a dataframe
             * has been created in undefined. */
