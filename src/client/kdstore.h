@@ -25,3 +25,4 @@ class KDStore {
             return dynamic_cast<DataFrame*>(kv_.wait_and_get(key)->payload_);
         }
 };
+
