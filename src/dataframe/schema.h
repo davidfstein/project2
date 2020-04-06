@@ -51,7 +51,7 @@ class Schema : public Object {
             row_names_ = new StringArrayArray();
             for (int i = 0; i < num_types; i++) {
                 char type = types[i];
-                if (type != 'S' && type != 'B' && type != 73 && type != 'F') {
+                if (type != 'S' && type != 'B' && type != 'I' && type != 'F' && type != 'D') {
                     printf("Unsupported type\n");
                     exit(1);
                 }

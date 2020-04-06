@@ -19,6 +19,7 @@ class Fielder : public Object {
         virtual void accept(bool b) {}
         virtual void accept(float f) {}
         virtual void accept(int i) {}
+        virtual void accept(double d) {}
         virtual void accept(String* s) {}
         
         /** Called when all fields have been seen. */

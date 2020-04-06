@@ -28,6 +28,14 @@ class Utils {
                     va_end(ap);
                     return arr; 
                 }
+                case DOUBLE: {
+                    DoubleArrayArray* arr = new DoubleArrayArray();
+                    for (int i = 0; i < n; i++) {
+                        arr->pushBack(va_arg(ap, double));
+                    }
+                    va_end(ap);
+                    return arr; 
+                }
                 case FLOAT: {
                     FloatArrayArray* arr = new FloatArrayArray();
                     for (int i = 0; i < n; i++) {

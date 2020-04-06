@@ -23,7 +23,7 @@
 class DataFrame : public Object {
     public:
         Schema* schema;
-        ObjectArrayArray* columns;
+        ColumnArray* columns;
  
         /** Create a data frame with the same columns as the given df but with no rows or rownmaes */
         DataFrame(DataFrame& df) : DataFrame(df.get_schema()){
@@ -39,7 +39,7 @@ class DataFrame : public Object {
             * empty. */
         DataFrame(Schema& schema) {
             this->schema = &schema;
-            columns = new ObjectArrayArray();
+            columns = new ColumnArray(schema.width());
             for (int i = 0; i < schema.width(); ++i) {
                 columns->pushBack(make_column(schema.col_type(i)));
             }
@@ -66,6 +66,9 @@ class DataFrame : public Object {
             }
             else if (type == 'F') {
                 return new FloatColumn();
+            }
+            else if (type == 'D') {
+                return new DoubleColumn();
             }
             else if (type == 'S') {
                 return new StringColumn();
@@ -117,10 +120,14 @@ class DataFrame : public Object {
             checkTypeAtPosition(col, 'S');
             return this->get_col(col)->as_string()->get(row);
         }
+
+        double get_double(size_t col, size_t row) {
+            checkTypeAtPosition(col, 'D');
+            return this->get_col(col)->as_double()->get(row);
+        }
         
         Column* get_col(int i) {
-            Object* result = columns->get(i);
-            return dynamic_cast<Column*>(result);
+            return columns->get(i);
         }
 
         /** Return the offset of the given column name or -1 if no such col. */
@@ -155,6 +162,11 @@ class DataFrame : public Object {
             checkTypeAtPosition(col, 'S');
             this->get_col(col)->as_string()->set(row, val);
         }
+
+        void set(size_t col, size_t row, double val) {
+            checkTypeAtPosition(col, 'D');
+            this->get_col(col)->as_double()->set(row, val);
+        }
         
         /** Set the fields of the given row object with values from the columns at
             * the given offset.  If the row is not form the same schema as the
@@ -175,6 +187,9 @@ class DataFrame : public Object {
                     row.set(i, val);
                 } else if (col_type == 'S') {
                     String* val = get_string(i, idx);
+                    row.set(i, val);
+                } else if (col_type == 'D') {
+                    double val = get_double(i, idx);
                     row.set(i, val);
                 } else {
                     printf("Column type not recognized.\n");
@@ -200,6 +215,9 @@ class DataFrame : public Object {
                 } else if (col_type == 'S') {
                     String* val = row.get_string(i);
                     this->get_col(i)->as_string()->push_back(val);
+                } else if (col_type == 'D') {
+                    double val = row.get_double(i);
+                    this->get_col(i)->as_double()->push_back(val);
                 } else {
                     printf("Column type not recognized.\n");
                     exit(1);
@@ -296,6 +314,9 @@ class DataFrame : public Object {
                     } else if (col_type == 'S') {
                         String* val = get_string(j, i);
                         printf("%s", val->c_str());
+                    } else if (col_type == 'D') {
+                        double val = get_double(j, i);
+                        printf("%f", val);
                     } else {
                         printf("Column type not recognized.\n");
                         exit(1);

@@ -12,10 +12,9 @@
 #include "../objects/string.h"
 #include "../objects/object.h"
 
-
 //CwC implementation of an Array like object. The class is istantiated with an initial length
 //but is also resizeable. Provides efficient storage and lookup.
-class Array: public Object{
+class Array: public Object {
   public:
     size_t capacity_;
     size_t size_;
@@ -744,6 +743,64 @@ class FloatArrayArray: public Array {
           }
           for (int i = subarrays_count; i < subarrays_count * 2; i++) {
               new_data[i] = new floatArray(100);
+          }
+          values_ = new_data;
+          capacity_ = capacity_ * 2;
+          set(size_, element);
+      }
+      size_ += 1;
+    }
+};
+
+class DoubleArrayArray: public Array {
+  public: 
+    DoubleArray** values_;
+
+    // Creates an array of size length, where each object is data_length long
+    DoubleArrayArray(): Array(100) {
+      values_ = new DoubleArray*[1];
+      values_[0] = new DoubleArray(100);
+    }
+
+    ~DoubleArrayArray() {
+      size_t num_array_pointers = this->length() / 100 > 0 ? this->length() / 100 : 1;
+      for (int i = 0; i < num_array_pointers; ++i) {
+        delete values_[i];
+      }
+      delete[] values_;
+    };
+
+    //returns the object at index
+    double get(size_t index) {
+      checkOutOfBounds(index);
+      int array_idx = index / 100;
+      int value_idx = index % 100;
+      return values_[array_idx]->get(value_idx);
+    }
+
+    //sets the object at index to be o, returns former object
+    void set(size_t index, double element) {
+      checkOutOfBounds(index);
+      int array_idx = index / 100;
+      int value_idx = index % 100;
+      if (value_idx < values_[array_idx]->length()) {
+        values_[array_idx]->set(value_idx, element);
+      } else {
+        values_[array_idx]->pushBack(element);
+      }
+    } 
+
+    double pushBack(double element) {
+      if (this->length() < capacity_) {
+        this->set(this->length(), element);
+      } else {
+          int subarrays_count = capacity_ / 100;
+          DoubleArray** new_data = new DoubleArray*[subarrays_count * 2];
+          for (int i = 0; i < subarrays_count; i++) {
+              new_data[i] = values_[i];
+          }
+          for (int i = subarrays_count; i < subarrays_count * 2; i++) {
+              new_data[i] = new DoubleArray(100);
           }
           values_ = new_data;
           capacity_ = capacity_ * 2;

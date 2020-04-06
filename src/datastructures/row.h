@@ -64,6 +64,12 @@ class Row : public Object {
             values_[col]->b = val;
         }
 
+        void set(size_t col, double val) {
+            checkCorrectDataType(col, 'D');
+            values_[col] = new Data;
+            values_[col]->d = val;
+        }
+
         /** The string is external. */
         void set(size_t col, String* val) {
             checkCorrectDataType(col, 'S');
@@ -95,6 +101,10 @@ class Row : public Object {
             checkCorrectDataType(col, 'F');
             return values_[col]->f;
         }
+        double get_double(size_t col) {
+            checkCorrectDataType(col, 'D');
+            return values_[col]->d;
+        }
         String* get_string(size_t col) {
             checkCorrectDataType(col, 'S');
             return values_[col]->s;
@@ -125,6 +135,9 @@ class Row : public Object {
                 }
                 else if (typ == 'F') {
                     f.accept(values_[index]->f);
+                }
+                else if (typ == 'D') {
+                    f.accept(values_[index]->d);
                 }
                 else if (typ == 'S') {
                     f.accept(values_[index]->s);

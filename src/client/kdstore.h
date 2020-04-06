@@ -2,7 +2,7 @@
 #include "../store/kvstore.h"
 #include "../datastructures/dataframe.h"
 
-class KDStore {
+class KDStore: public Object {
 
     public:
         KVStore kv_;
