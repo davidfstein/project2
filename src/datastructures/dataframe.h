@@ -23,7 +23,7 @@
 class DataFrame : public Object {
     public:
         Schema* schema;
-        ColumnArray* columns;
+        ObjectArrayArray* columns;
  
         /** Create a data frame with the same columns as the given df but with no rows or rownmaes */
         DataFrame(DataFrame& df) : DataFrame(df.get_schema()){
@@ -39,7 +39,7 @@ class DataFrame : public Object {
             * empty. */
         DataFrame(Schema& schema) {
             this->schema = &schema;
-            columns = new ColumnArray(schema.width());
+            columns = new ObjectArrayArray();
             for (int i = 0; i < schema.width(); ++i) {
                 columns->pushBack(make_column(schema.col_type(i)));
             }
@@ -127,7 +127,7 @@ class DataFrame : public Object {
         }
         
         Column* get_col(int i) {
-            return columns->get(i);
+            return dynamic_cast<Column*>(columns->get(i));
         }
 
         /** Return the offset of the given column name or -1 if no such col. */
