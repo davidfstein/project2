@@ -163,19 +163,19 @@ void test_row_length() {
   return;
 }
 
-// TEST(schema, t0) { test_schema_correct_types(); }
-// TEST(schema, t2) { test_schema_empty_type_char(); }
-// TEST(schema, t3) { test_add_column_empty_columns(); }
-// TEST(schema, t4) { test_add_column_full_columns(); }
-// TEST(schema, t5) { test_add_column_name(); }
-// TEST(schema, t6) { test_add_column_empty_name(); }
-// TEST(schema, t7) { test_add_row_name(); }
-// TEST(schema, t8) { test_add_row_empty_name(); }
-// TEST(schema, t9) { test_set_row_name(); }
-// TEST(schema, t10) { ASSERT_EXIT_ONE(test_set_row_name_out_of_bounds); }
-// TEST(schema, t11) { ASSERT_EXIT_ONE(test_set_row_name_nullptr); }
-// TEST(schema, t12) { test_row_width(); }
-// TEST(schema, t13) { test_row_length(); }
+TEST(schema, t0) { test_schema_correct_types(); }
+TEST(schema, t2) { test_schema_empty_type_char(); }
+TEST(schema, t3) { test_add_column_empty_columns(); }
+TEST(schema, t4) { test_add_column_full_columns(); }
+TEST(schema, t5) { test_add_column_name(); }
+TEST(schema, t6) { test_add_column_empty_name(); }
+TEST(schema, t7) { test_add_row_name(); }
+TEST(schema, t8) { test_add_row_empty_name(); }
+TEST(schema, t9) { test_set_row_name(); }
+TEST(schema, t10) { ASSERT_EXIT_ONE(test_set_row_name_out_of_bounds); }
+TEST(schema, t11) { ASSERT_EXIT_ONE(test_set_row_name_nullptr); }
+TEST(schema, t12) { test_row_width(); }
+TEST(schema, t13) { test_row_length(); }
 
 void test_make_int_column() {
   Schema* s = new Schema();
@@ -360,29 +360,28 @@ void test_nrows() {
     d.add_row(*r);
   }
   GT_EQUALS(d.nrows(), 1000 * 1000);
-  exit(0);
+  return;
 }
 
 void test_ncols() {
   Schema* s = new Schema("IBFFS");
   DataFrame d(*s);
   GT_EQUALS(d.ncols(), 5);
-  exit(0);
+  return;
 }
 
-// TEST(dataframe, t14) { test_make_int_column(); }
-// TEST(dataframe, t15) { test_make_string_column(); }
-// TEST(dataframe, t16) { test_make_bool_column(); }
-// TEST(dataframe, t17) { test_make_float_column(); }
-// TEST(dataframe, t18) { test_df_add_column(); }
-// TEST(dataframe, t20) { test_type_at_position(); }
-// TEST(dataframe, t21) { ASSERT_EXIT_ONE(test_wrong_type_at_position); }
-// TEST(dataframe, t22) { test_df_add_row(); }
-// TEST(dataframe, t23) { ASSERT_EXIT_ONE(test_df_add_row_wrong_type); }
-// TEST(dataframe, t24) { test_df_set_row(); }
-TEST(dataframe, t25) { test_df_set_row_lots(); }
-// TEST(dataframe, t26) { ASSERT_EXIT_ZERO(test_nrows); }
-// TEST(dataframe, t27) { ASSERT_EXIT_ZERO(test_ncols); }
+TEST(dataframe, t14) { test_make_int_column(); }
+TEST(dataframe, t15) { test_make_string_column(); }
+TEST(dataframe, t16) { test_make_bool_column(); }
+TEST(dataframe, t17) { test_make_float_column(); }
+TEST(dataframe, t18) { test_df_add_column(); }
+TEST(dataframe, t20) { test_type_at_position(); }
+TEST(dataframe, t21) { ASSERT_EXIT_ONE(test_wrong_type_at_position); }
+TEST(dataframe, t22) { test_df_add_row(); }
+TEST(dataframe, t23) { ASSERT_EXIT_ONE(test_df_add_row_wrong_type); }
+TEST(dataframe, t24) { test_df_set_row(); }
+TEST(dataframe, t26) { test_nrows(); }
+TEST(dataframe, t27) { test_ncols(); }
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

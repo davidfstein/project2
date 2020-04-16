@@ -22,25 +22,25 @@ class Serial : public Object {
 
         void add_code(int i) {
             const char* code = reinterpret_cast<char*>(&i);
-            this->buf = buf.c(code, sizeof(int));
+            this->buf = buf.c(code);
         }
 
         void write(double db) {
             add_code(15);
             const char* str = reinterpret_cast<char*>(&db);
-            this->buf = buf.c(str, sizeof(double));
+            this->buf = buf.c(str);
         }
 
         void write(int i) {
             add_code(1);
             const char* str = reinterpret_cast<const char*>(&i);
-            this->buf = buf.c(str, sizeof(int));
+            this->buf = buf.c(str);
         }
 
         void write(size_t s) {
             add_code(2);
             const char* str = reinterpret_cast<char*>(&s);
-            this->buf = buf.c(str, sizeof(size_t));
+            this->buf = buf.c(str);
         }
 
         void write(char* ch) {
@@ -57,32 +57,32 @@ class Serial : public Object {
             }
         }
 
-        void write(StringArray* sa) {
+        void write(strArray* sa) {
             add_code(5);
-            this->write(sa->size());
-            for (int i = 0; i < sa->size(); i++) {
+            this->write(sa->length());
+            for (int i = 0; i < sa->length(); i++) {
                 write(sa->get(i));
             }
         }
 
         void write(DoubleArray* d) {
             add_code(6);
-            this->write(d->size());
+            this->write(d->length());
             this->write(d->capacity_);
-            for (int i = 0; i < d->size(); i++) {
+            for (int i = 0; i < d->length(); i++) {
                 write(d->get(i));
             }
         }
 
-        void write(MsgKind* kind) {
+        void write(MsgKind kind) {
             add_code(7);
             const char* str = reinterpret_cast<char*>(kind);
-            this->buf = buf.c(str, sizeof(MsgKind));
+            this->buf = buf.c(str);
         }
 
         void write(Message* m) {
             add_code(8);
-            write(&m->kind_);
+            write(m->kind_);
             write(m->sender_);
             write(m->target_);
             write(m->id_);

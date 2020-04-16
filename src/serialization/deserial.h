@@ -57,7 +57,7 @@ class Deserial {
         }
 
         double* make_double() {
-            char* code = get_char_bytes(8);
+            char* code = get_char_bytes(sizeof(double));
             return reinterpret_cast<double*>(code);
         }
 

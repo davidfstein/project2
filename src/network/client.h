@@ -11,6 +11,8 @@
 #include "../objects/object.h"
 #include "../objects/string.h"
 #include "../datastructures/array.h"
+#include "../serialization/serial.h"
+#include "../serialization/deserial.h"
 
 // A CwC implementation of a client that can bind to an ip and connect to a server. This implementation
 // supports sending messages to the server and other connected clients and recieving messages as well.
@@ -111,7 +113,15 @@ class Client : public Object {
                 }
                 return;
             }
+            Serial* s = new Serial();
+            s->write(310.000);
+            String* str = s->buf.get();
+            StrBuff* b = new StrBuff();
+            b->c(*str);
+            Deserial* d = new Deserial(*b);
+            printf("%f\n", d->make_double());
             int nbytes = write(fd, message->c_str(), strlen(message->c_str()));
+            // int nbytes = write(fd, str->c_str(), strlen(str->c_str()));
             if (nbytes < 0) {
                 printf("Could not write.");
                 exit(1);
@@ -146,6 +156,10 @@ class Client : public Object {
             } else if (nbytes == 0) {
                 return -1;
             } else {
+                // StrBuff* s = new StrBuff();
+                // s->c(buffer);
+                // Deserial* d = new Deserial(*s);
+                // printf("%f\n", d->make_double());
                 printf("%s\n", buffer);
                 memset(buffer, 0, MAX_MSG);
                 return 0;

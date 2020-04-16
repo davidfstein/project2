@@ -5,7 +5,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <netdb.h>
-#include "array.h"
+#include "../datastructures/array.h"
 
 // Right now a grab bag of utility functions. Should be split up more intentionally later.
 class Utils {
